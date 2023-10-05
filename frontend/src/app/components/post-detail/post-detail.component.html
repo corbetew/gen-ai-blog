@@ -1,0 +1,6 @@
+<article *ngIf="post">
+    <h1>{{ post.title }}</h1>
+    <p>By {{ post.author }} on {{ post.date | date }}</p>
+    <div [innerHTML]="post.content"></div>
+    <p class="tags">Tags: <span *ngFor="let tag of post.tags">{{ tag }}</span></p>
+</article>

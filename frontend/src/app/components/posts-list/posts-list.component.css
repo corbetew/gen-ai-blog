@@ -1,0 +1,31 @@
+.posts-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .posts-list li {
+    border-bottom: 1px solid #ddd;
+    padding: 1rem 0;
+  }
+  
+  .posts-list h2 {
+    margin: 0;
+  }
+  
+  .posts-list h2 a {
+    color: #007BFF;
+    text-decoration: none;
+  }
+  
+  .posts-list h2 a:hover {
+    text-decoration: underline;
+  }
+  
+  .tags {
+    font-size: 0.9rem;
+    color: #777;
+  }
+  
+  .tags span {
+    margin-right: 5px;
+  }

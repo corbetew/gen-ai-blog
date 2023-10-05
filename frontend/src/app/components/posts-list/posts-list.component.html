@@ -1,0 +1,7 @@
+<ul class="posts-list">
+    <li *ngFor="let post of posts">
+        <h2><a [routerLink]="['/posts', post.id]">{{ post.title }}</a></h2>
+        <p>By {{ post.author }} on {{ post.date | date }}</p>
+        <p class="tags">Tags: <span *ngFor="let tag of post.tags">{{ tag }}</span></p>
+    </li>
+</ul>
