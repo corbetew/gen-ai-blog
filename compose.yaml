@@ -11,6 +11,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
+      - FIRESTORE_EMULATOR_HOST=firestore:8598
 
   frontend:
     build:
@@ -19,9 +20,12 @@ services:
     command: ./node_modules/.bin/ng serve --host 0.0.0.0 --poll 1
     volumes:
       - ./frontend:/app
-    expose:
-      - "49153:49153"
     ports:
       - "4200:4200"
-      - "49153:49153"
+
+  firestore:
+    image: google/cloud-sdk:latest
+    expose:
+      - "8598"
+    command: bash -c "gcloud emulators firestore start --host-port=0.0.0.0:8598"
     

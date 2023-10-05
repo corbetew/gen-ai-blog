@@ -1,27 +1,31 @@
 const express = require('express');
 const marked = require('marked');
+const admin = require('firebase-admin');
 const router = express.Router();
 
 // Mock data for now
-const posts = [
-    {
-        id: 1,
-        title: "Introduction to Generative AI",
-        content: "# This is a markdown header\n\nThis is some markdown content.",
-        // ... other fields
-    },
-    // ... other posts
-];
+admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+    databaseURL: "http://firestore-emulator:8080", // point to the emulator
+  });
+  
+const db = admin.firestore();
 
-router.get('/posts', (req, res) => {
+router.get('/posts', async (req, res) => {
+    const snapshot = await db.collection('posts').get();
+    const posts = [];
+    snapshot.forEach(doc => {
+        posts.push(doc.data());
+    });
     res.json(posts);
 });
 
-router.get('/posts/:id', (req, res) => {
-    const post = posts.find(p => p.id === parseInt(req.params.id));
-    if (!post) return res.status(404).send('Post not found');
-    const htmlContent = marked.marked(post.content);
-    res.json({ ...post, content: htmlContent });    
+router.get('/posts/:id', async (req, res) => {
+    const postDoc = await db.collection('posts').doc(req.params.id).get();
+    if (!postDoc.exists) return res.status(404).send('Post not found');
+    const post = postDoc.data();
+    const htmlContent = marked(post.content);
+    res.json({ ...post, content: htmlContent });   
 });
 
 module.exports = router;
