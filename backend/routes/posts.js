@@ -4,10 +4,7 @@ const admin = require('firebase-admin');
 const router = express.Router();
 
 // Mock data for now
-admin.initializeApp({
-    credential: admin.credential.applicationDefault(),
-    databaseURL: "http://firestore-emulator:8080", // point to the emulator
-  });
+admin.initializeApp();
   
 const db = admin.firestore();
 

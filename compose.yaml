@@ -12,6 +12,9 @@ services:
     environment:
       - NODE_ENV=development
       - FIRESTORE_EMULATOR_HOST=firestore:8598
+      - GCLOUD_PROJECT=test
+      - GCP_LOCATION_ID=us-east1
+      - FIREBASE_PROJECT_ID=test
 
   frontend:
     build:
@@ -24,8 +27,17 @@ services:
       - "4200:4200"
 
   firestore:
-    image: google/cloud-sdk:latest
+    build:
+      context: ./test/firestore
+      dockerfile: Dockerfile
     expose:
-      - "8598"
-    command: bash -c "gcloud emulators firestore start --host-port=0.0.0.0:8598"
+      - "8080"
+      - "4000"
+    ports:
+      - "8080:8080"
+      - "4000:4000"
+    volumes:
+      - ./test/firestore/firebase.json:/app/firebase.json
+    working_dir: /app
+    command: bash -c "firebase init | firebase emulators:start --project=test"
     
