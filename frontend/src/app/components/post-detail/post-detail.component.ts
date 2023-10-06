@@ -18,7 +18,7 @@ export class PostDetailComponent {
 
   ngOnInit(): void {
     const paramId = this.route.snapshot.paramMap.get('id');
-    const id = paramId ? +paramId : 0;
+    const id = paramId ? paramId : 'none';
     this.postService.getPostById(id).subscribe(data => {
       this.post = data;
     });

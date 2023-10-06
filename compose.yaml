@@ -3,7 +3,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: npm run dev
+    command: bash -c "/usr/src/app/scripts/dev/waitForFirestore.sh && npm run dev"
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
@@ -11,7 +11,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-      - FIRESTORE_EMULATOR_HOST=firestore:8598
+      - FIRESTORE_EMULATOR_HOST=firestore:8080
       - GCLOUD_PROJECT=test
       - GCP_LOCATION_ID=us-east1
       - FIREBASE_PROJECT_ID=test
@@ -28,7 +28,7 @@ services:
 
   firestore:
     build:
-      context: ./test/firestore
+      context: ./dev/firestore
       dockerfile: Dockerfile
     expose:
       - "8080"
@@ -37,7 +37,7 @@ services:
       - "8080:8080"
       - "4000:4000"
     volumes:
-      - ./test/firestore/firebase.json:/app/firebase.json
+      - ./dev/firestore/firebase.json:/app/firebase.json
     working_dir: /app
     command: bash -c "firebase init | firebase emulators:start --project=test"
     
